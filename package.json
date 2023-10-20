@@ -1,0 +1,26 @@
+{
+  "name": "dpr",
+  "version": "1.0.0",
+  "description": "Dangling prepositions remover",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasilyman/dpr.git"
+  },
+  "keywords": [
+    "Dangling",
+    "prepositions",
+    "remover",
+    "висячие",
+    "предлоги"
+  ],
+  "author": "Butorin Vasiliy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vasilyman/dpr/issues"
+  },
+  "homepage": "https://github.com/vasilyman/dpr#readme"
+}
