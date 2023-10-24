@@ -1,25 +1,25 @@
 import predlogs from "./predlogi.json";
 
 const regexFn = new RegExp(
-  `(?<=[^A-Za-zА-ЯЁа-яё]|^)(${predlogs.join("|")})(\\s)`,
-  "gmi"
+  `(^|\\p{P}|\\p{S}|\\p{Z}|\\p{C}|\\p{M}|\\p{N})(${predlogs.join("|")})([\\r\\n\\t\\f\\v \\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff])`,
+  "gmiu"
 );
 
 const addNbspBeforeRegexp = (el, rFn) => {
   el.childNodes.forEach(node => {
     if (node.nodeType === Node.TEXT_NODE) {
       let temp = node.textContent;
-      node.textContent = temp.replace(rFn, "$1\u00a0");
+      while (rFn.test(temp)) {
+        temp = temp.replace(rFn, "$1$2\u00a0");
+      }
+      node.textContent = temp;
     } else {
       setTimeout(() => {
+        if (process.env.NODE_ENV === 'development') performance.mark('predlogi tick')
         addNbspBeforeRegexp(node, rFn);
       }, 0);
     }
   });
-};
-
-export const dpr = (el) => {
-  addNbspBeforeRegexp(el, regexFn)
 };
 
 /**
@@ -32,11 +32,11 @@ export default {
     Vue.directive("predlogi", {
       bind(el) {
         addNbspBeforeRegexp(el, regexFn);
+        if (process.env.NODE_ENV === 'development') performance.mark('predlogin end');
       },
       updated(el) {
         addNbspBeforeRegexp(el, regexFn);
-        // eslint-disable-next-line no-console
-        console.log("updated", el);
+        if (process.env.NODE_ENV === 'development') performance.mark('predlogin end (after update vue)');
       }
     });
   }
